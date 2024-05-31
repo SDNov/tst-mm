@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.model.Location;
+import org.example.model.OwnerIdPool;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -13,19 +14,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MainTest {
 
+    private final OwnerIdPool pool = OwnerIdPool.getInstance(100);
     @Test
     void generateLocation() {
-        Location location = new Location();
+        Location location = new Location(pool.getRandomUUID());
 
         assertNotNull(location.getId());
+        assertTrue(pool.contains(location.getOwnerId()));
     }
 
     @Test
     void locationIdIsUnique() {
-        int numbers = 1000;
+        int numbers = pool.getSize();
         Set<UUID> uuidSet = new HashSet<>();
         for (int i = 0; i < numbers; i++) {
-            Location location = new Location();
+            Location location = new Location(pool.getRandomUUID());
             uuidSet.add(location.getId());
         }
 
