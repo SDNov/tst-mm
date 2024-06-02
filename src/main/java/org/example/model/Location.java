@@ -5,10 +5,12 @@ import java.util.UUID;
 public class Location {
     UUID id;
     UUID ownerID;
+    String city;
 
-    public Location(UUID ownerId) {
+    public Location(UUID ownerId, String city) {
         this.id = UUID.randomUUID();
         this.ownerID = ownerId;
+        this.city = city;
     }
 
     public UUID getId() {
@@ -17,5 +19,9 @@ public class Location {
 
     public UUID getOwnerId() {
         return ownerID;
+    }
+
+    public String getCity() {
+        return city;
     }
 }
