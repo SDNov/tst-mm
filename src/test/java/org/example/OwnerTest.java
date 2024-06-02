@@ -38,6 +38,7 @@ public class OwnerTest {
         assertTrue(n > uuidSet.size());
     }
 
+    // TODO: 02.06.2024 для начала поправить OwnerIdPool.getInstance
     @Test
     void b() {
         int size = ownerIdPool.getSize();
