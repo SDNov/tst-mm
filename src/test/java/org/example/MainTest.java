@@ -1,9 +1,13 @@
 package org.example;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.model.Location;
 import org.example.model.OwnerIdPool;
 import org.junit.jupiter.api.Test;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -33,5 +37,33 @@ class MainTest {
         }
 
         assertEquals(numbers, uuidSet.size());
+    }
+
+    @Test
+    void serializerTest() throws Exception{
+        UUID ownerId = UUID.randomUUID();
+        Location expected = new Location(ownerId);
+        List<Location> locations = List.of(expected);
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            Serializer serializer = new Serializer();
+            serializer.serialize(locations, outputStream);
+            ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            List<Location> resultList = objectMapper
+                    .readValue(outputStream.toByteArray(), new TypeReference<>() {
+            });
+            assertEquals(locations.size(), resultList.size());
+
+            assertEquals(expected.getId(), resultList.get(0).getId());
+        }
+    }
+
+    @Test
+    void mainScenario() throws IOException {
+        String filePath = "test.json";
+        int N = 1;
+        Worker worker = new Worker();
+        File result = worker.doWork(filePath, N);
+        assertTrue(result.exists());
+        result.delete();
     }
 }

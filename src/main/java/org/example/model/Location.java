@@ -6,6 +6,9 @@ public class Location {
     UUID id;
     UUID ownerID;
 
+    public Location() {
+    }
+
     public Location(UUID ownerId) {
         this.id = UUID.randomUUID();
         this.ownerID = ownerId;
